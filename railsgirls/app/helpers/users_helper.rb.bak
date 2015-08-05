@@ -1,0 +1,4 @@
+module UsersHelper
+
+#返回指定用户的Gravata
+end
