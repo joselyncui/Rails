@@ -23,19 +23,41 @@ class IdeasController < ApplicationController
 
   def like_add
 	idea_id = params[:id]
-	@idea = Idea.find_by(id: idea_id)
-	@idea.like += 1
-	@idea.update_attributes(:like=>@idea.like)
-
+	choice = params[:choice]
+	if( choice == "dislike" )
+		@idea = Idea.find_by(id: idea_id)
+		@idea.like += 1
+		@idea.dislike -= 1
+		@idea.update_attributes(like: @idea.like, dislike: @idea.dislike)
+		@vote = Vote.find_by(user_id: current_user.id, idea_id: idea_id)
+		@vote.update_attributes(choice: "like")
+	else
+		@idea = Idea.find_by(id: idea_id)
+		@idea.like += 1
+		@idea.update_attributes(like: @idea.like)
+		@vote = Vote.new(user_id: current_user.id, idea_id: idea_id, choice: "like")
+		@vote.save
+	end
 	redirect_to ideas_path
   end
 
   def dislike_add
 	idea_id = params[:id]
-	@idea = Idea.find_by(id: idea_id)
-	@idea.dislike += 1
-	@idea.update_attributes(:dislike=>@idea.dislike)
-
+	choice = params[:choice]
+	if( choice == "like" )
+		@idea = Idea.find_by(id: idea_id)
+		@idea.like -= 1
+		@idea.dislike += 1
+		@idea.update_attributes(like: @idea.like, dislike: @idea.dislike)
+		@vote = Vote.find_by(user_id: current_user.id, idea_id: idea_id)
+		@vote.update_attributes(choice: "dislike")
+	else
+		@idea = Idea.find_by(id: idea_id)
+		@idea.dislike += 1
+		@idea.update_attributes(dislike: @idea.dislike)
+		@vote = Vote.new(user_id: current_user.id, idea_id: idea_id, choice: "dislike")
+		@vote.save
+	end
 	redirect_to ideas_path
   end
 

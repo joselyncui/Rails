@@ -27,17 +27,28 @@
 		<td><%= idea.dislike %></td>
 		
 		<td>
-			<%if current_user.id == idea.user_id %>
+			<% if current_user.id == idea.user_id %>
 			<%= link_to 'Edit', edit_idea_path(idea) %>&nbsp;|
 			<%= link_to 'Destroy', idea, method: :delete, data: { confirm: 'Are you sure?' } %>
-			<% end %>
-		</td>
-		
-		
-		<td>
-			<% if current_user.id != idea.user_id %>
-			<%= link_to('Like' , {:controller =>'ideas',:action => 'like_add',:id =>idea.id } ) %>&nbsp;|
-			<%= link_to('Dislike' , {:controller =>'ideas',:action => 'dislike_add',:id =>idea.id } ) %>
+			<% else %>
+				<% @flag_show_choice = true %>
+				<% idea.votes.each do |vote| %>
+					<% if current_user.id == vote.user_id %>
+						<% @flag_show_choice = false %>
+						<% if vote.choice == "default" %>
+						<% @flag_show_choice = true %>
+						<% elsif vote.choice == "like" %>
+							<%= link_to('Dislike' , {:controller =>'ideas',:action => 'dislike_add',:id =>idea.id, :choice => 'like'} ) %>
+						<% else %>
+							<%= link_to('Like' , {:controller =>'ideas',:action => 'like_add',:id =>idea.id, :choice => 'dislike' } ) %>
+						<% end %>
+					<% end %>
+				<% end %>
+				
+				<% if @flag_show_choice %>
+					<%= link_to('Like' , {:controller =>'ideas',:action => 'like_add',:id =>idea.id, :choice => 'default' } ) %>&nbsp;|
+					<%= link_to('Dislike' , {:controller =>'ideas',:action => 'dislike_add',:id =>idea.id, :choice => 'default' } ) %>
+				<% end %>
 			<% end %>
 		</td>
 		
