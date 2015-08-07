@@ -1,6 +1,6 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
 	<div class="container">
-		<%= link_to "Rails Girls", "#", id:"logo"%>
+		<%= link_to "Ideas", "#", id:"logo"%>
 		<nav>
 			<ul class = "nav navbar-nav pull-right">
 				<li><%= link_to "Home", root_path %></li>
@@ -12,7 +12,7 @@
               Account <b class="caret"></b>
             </a>
 					<ul class="dropdown-menu">
-              <li><%= link_to "Idea List", ideas_path%></li>
+              <li><%= link_to "Idea List", ideas_path %></li>
               <li><%= link_to "Settings", '#' %></li>
               <li class="divider"></li>
               <li>
@@ -21,7 +21,12 @@
             </ul>
 
 			<% else%>
-				<li><%= link_to "Log in", login_path %></li>
+				<li>
+					<%= link_to "Log in", login_path %>
+				</li>
+				<li>
+					<%= link_to "Sign up", signup_path %>
+				</li>
 			<% end %>
 
 			<!-- Single button -->

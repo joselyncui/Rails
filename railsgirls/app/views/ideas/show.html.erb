@@ -30,5 +30,7 @@
   <%= @idea.dislike %>
 </p>
 
+<% if current_user != nil %>
 <%= link_to 'Edit', edit_idea_path(@idea) %> |
+<% end %>
 <%= link_to 'Back', ideas_path %>
